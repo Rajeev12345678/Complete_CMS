@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Post;
-use App\Models\Category;
+use Session;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
-class PostsController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.categories.index')->with('categories', Category::all());
     }
 
     /**
@@ -24,7 +24,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create')->with('categories', Category::all());
+        return view('admin.categories.create');
     }
 
     /**
@@ -35,26 +35,16 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request, [
-          'title' => 'required|max:255',
-          'featured' => 'required|image',
-          'content' => 'required',
-          'category_id' => 'required'
+          'name' => 'required'
         ]);
 
-        $featured = $request->featured;
-        $featured_new_name = time().$featured->getClientOriginalName();
-        $featured->move('uploads/posts', $featured_new_name);
-        $post = Post::create([
-          'title' => $request->title,
-          'content' => $request->content,
-          'featured' => 'uploads/posts/' . $featured_new_name,
-          'category_id' => $request->category_id
-        ]);
+        $category = new Category;
 
-        session::flash('success', 'Post created successfully.');
-        dd($request->all());
+        $category->name = $request->name;
+        $category->save();
+        Session::flash('success', 'Category successfully created.');
+        return redirect()->route('categories');
     }
 
     /**
@@ -76,7 +66,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        return view('admin.categories.edit')->with('category', $category);
     }
 
     /**
@@ -88,7 +79,11 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        $category->name = $request->name;
+        $category->save();
+        Session::flash('success', 'Category successfully updated.');
+        return redirect()->route('categories');
     }
 
     /**
@@ -99,6 +94,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+        Session::flash('success', 'Category successfully deleted.');
+        return redirect()->route('categories');
     }
 }
