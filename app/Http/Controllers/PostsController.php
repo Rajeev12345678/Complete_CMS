@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Session;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
@@ -14,7 +16,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.posts.index')->with('posts', Post::all());
     }
 
     /**
@@ -24,7 +26,14 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create')->with('categories', Category::all());
+      $categories = Category::all();
+
+      if($categories->count() == 0)
+      {
+        session::flash('info', 'A category is required to create a post');
+        return redirect()->back();
+      }
+        return view('admin.posts.create')->with('categories', $categories);
     }
 
     /**
@@ -50,11 +59,12 @@ class PostsController extends Controller
           'title' => $request->title,
           'content' => $request->content,
           'featured' => 'uploads/posts/' . $featured_new_name,
-          'category_id' => $request->category_id
+          'category_id' => $request->category_id,
+          'slug' => Str::slug($request->title)
         ]);
 
         session::flash('success', 'Post created successfully.');
-        dd($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -99,6 +109,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        session::flash('success', 'The post is trashed.');
+        return redirect()->back();
     }
 }

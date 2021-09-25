@@ -4,10 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\softDeletes;
 
 class Post extends Model
 {
     use HasFactory;
+
+    use softDeletes;
+
+    protected $fillable = [
+      'title', 'content', 'category_id', 'featured', 'slug'
+    ];
+
+    public function getFeaturedAttribute($featured)
+    {
+      return asset($featured);
+    }
+
+    protected $dates = ['deleted_at'];
 
     public function category()
     {
