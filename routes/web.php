@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function() {
+  return App\Models\Post::find(9)->tags;
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -47,6 +51,31 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     'as' => 'posts'
   ]);
 
+  Route::get('/posts/trashed', [
+    'uses' => 'App\Http\Controllers\PostsController@trashed',
+    'as' => 'posts.trashed'
+  ]);
+
+  Route::get('/posts/restore/{id}', [
+    'uses' => 'App\Http\Controllers\PostsController@restore',
+    'as' => 'post.restore'
+  ]);
+
+  Route::get('/posts/edit/{id}', [
+    'uses' => 'App\Http\Controllers\PostsController@edit',
+    'as' => 'post.edit'
+  ]);
+
+  Route::post('/posts/update/{id}', [
+    'uses' => 'App\Http\Controllers\PostsController@update',
+    'as' => 'post.update'
+  ]);
+
+  Route::get('/posts/kill/{id}', [
+    'uses' => 'App\Http\Controllers\PostsController@kill',
+    'as' => 'post.kill'
+  ]);
+
   Route::get('/category/create', [
     'uses' => 'App\Http\Controllers\CategoriesController@create',
     'as' => 'category.create'
@@ -75,6 +104,36 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
   Route::post('/category/update/{id}', [
     'uses' => 'App\Http\Controllers\CategoriesController@update',
     'as' => 'category.update'
+  ]);
+
+  Route::get('/tags', [
+    'uses' => 'App\Http\Controllers\TagsController@index',
+    'as' => 'tags'
+  ]);
+
+  Route::get('/tag/edit/{id}', [
+    'uses' => 'App\Http\Controllers\TagsController@edit',
+    'as' => 'tag.edit'
+  ]);
+
+  Route::get('/tag/create', [
+    'uses' => 'App\Http\Controllers\TagsController@create',
+    'as' => 'tag.create'
+  ]);
+
+  Route::post('/tag/store', [
+    'uses' => 'App\Http\Controllers\TagsController@store',
+    'as' => 'tag.store'
+  ]);
+
+  Route::post('/tag/update/{id}', [
+    'uses' => 'App\Http\Controllers\TagsController@update',
+    'as' => 'tag.update'
+  ]);
+
+  Route::get('/tag/delete/{id}', [
+    'uses' => 'App\Http\Controllers\TagsController@destroy',
+    'as' => 'tag.delete'
   ]);
 
 });

@@ -4,15 +4,15 @@
 @include('admin.includes.errors')
   <div class="card">
       <div class="card-header">
-        Create a new post
+        Edit post: {{$post->title}}
       </div>
 
       <div class="card-body">
-        <form action="{{route('post.store')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('post.update', ['id' => $post->id])}}" method="post" enctype="multipart/form-data">
           {{csrf_field()}}
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" name="title" class="form-control mb-2">
+            <input type="text" name="title" class="form-control mb-2" value="{{$post->title}}">
           </div>
 
           <div class="form-group">
@@ -22,9 +22,13 @@
 
           <div class="form-group">
             <label for="category">Select a category</label>
-            <select name="category_id" id="category" class="form-control mb-2">
+            <select name="category_id" id="category" class="form-control">
               @foreach($categories as $category)
-              <option value="{{$category->id}}">{{$category->name}}</option>
+              <option value="{{$category->id}}"
+                @if($post->category->id == $category->id)
+                selected
+                @endif
+                >{{$category->name}}</option>
               @endforeach
             </select>
           </div>
@@ -33,20 +37,26 @@
             <label for="tags"class="mb-2">Select tags</label>
             @foreach($tags as $tag)
             <div class="checkbox">
-                <label><input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="mb-2"> {{$tag->tag}}</label>
+                <label><input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="mb-2"
+                  @foreach($post->tags as $t)
+                  @if($tag->id == $t->id)
+                  checked
+                  @endif
+                  @endforeach
+                  > {{$tag->tag}}</label>
           </div>
           @endforeach
           </div>
 
           <div class="form-group">
             <label for="content">Content</label>
-            <textarea name="content" id="content" cols="5" rows="5" class="form-control mb-2"></textarea>
+            <textarea name="content" id="content" cols="5" rows="5" class="form-control mb-2">{{$post->content}}</textarea>
           </div>
 
           <div class="form-group">
             <div class="text-center">
               <button class="btn btn-success" type="submit">
-                Store Post
+                Update Post
               </button>
             </div>
           </div>
