@@ -97,6 +97,20 @@
                 <a href="{{route('tags')}}">Tags</a>
               </li>
 
+              @if(Auth::user()->admin)
+              <li class="list-group-item">
+                <a href="{{route('users')}}">Users</a>
+              </li>
+
+              <li class="list-group-item">
+              <a href="{{route('user.create')}}">New User</a>
+              </li>
+              @endif
+
+              <li class="list-group-item">
+              <a href="{{route('user.profile')}}">My profile</a>
+              </li>
+
               <li class="list-group-item">
                 <a href="{{route('posts')}}">Posts</a>
               </li>
@@ -104,6 +118,7 @@
               <li class="list-group-item">
                 <a href="{{route('posts.trashed')}}">Trashed Posts</a>
               </li>
+
 
               <li class="list-group-item">
                 <a href="{{route('category.create')}}">Create new category</a>

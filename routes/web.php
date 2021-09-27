@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function() {
-  return App\Models\Post::find(9)->tags;
+  return App\Models\User::find(1)->profile;
 });
 
 Route::get('/', function () {
@@ -134,6 +134,41 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
   Route::get('/tag/delete/{id}', [
     'uses' => 'App\Http\Controllers\TagsController@destroy',
     'as' => 'tag.delete'
+  ]);
+
+  Route::get('/users', [
+    'uses' => 'App\Http\Controllers\UsersController@index',
+    'as' => 'users'
+  ]);
+
+  Route::get('/user/create', [
+    'uses' => 'App\Http\Controllers\UsersController@create',
+    'as' => 'user.create'
+  ]);
+
+  Route::post('/user/store', [
+    'uses' => 'App\Http\Controllers\UsersController@store',
+    'as' => 'user.store'
+  ]);
+
+  Route::get('/user/admin/{id}', [
+    'uses' => 'App\Http\Controllers\UsersController@admin',
+    'as' => 'user.admin'
+  ]);
+
+  Route::get('/user/not-admin/{id}', [
+    'uses' => 'App\Http\Controllers\UsersController@not_admin',
+    'as' => 'user.not.admin'
+  ]);
+
+  Route::get('user/profile', [
+    'uses' => 'App\Http\Controllers\ProfilesController@index',
+    'as' => 'user.profile'
+  ]);
+
+  Route::post('/user/profile/update', [
+    'uses' => 'App\Http\Controllers\ProfilesController@update',
+    'as' => 'user.profile.update'
   ]);
 
 });

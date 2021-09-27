@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'admin'
     ];
 
     /**
@@ -32,6 +33,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function profile(){
+      return $this->hasOne('App\Models\Profile');
+    }
 
     /**
      * The attributes that should be cast.
