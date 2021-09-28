@@ -30,7 +30,7 @@
         @if($posts->count() > 0)
         @foreach($posts as $post)
         <tr>
-          <td><img src="{{$post->featured}}" alt="{{$post->title}}" width="70px" height="50px"></td>
+          <td><img src="{{$post->featured}}" alt="{{$post->title}}" width="50px" height="50px"></td>
           <td>{{$post->title}}</td>
           <td>Edit</td>
           <td>

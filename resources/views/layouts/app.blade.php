@@ -22,6 +22,7 @@
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -132,6 +133,12 @@
                 <a href="{{route('post.create')}}">Create new post</a>
               </li>
 
+              @if(Auth::user()->admin)
+              <li class="list-group-item">
+              <a href="{{route('settings')}}">Settings</a>
+              </li>
+              @endif
+
             </ul>
           </div>
             @endif
@@ -153,5 +160,6 @@
       toastr.info("{{Session::get('info')}}")
     @endif
     </script>
+    @yield('scripts')
 </body>
 </html>

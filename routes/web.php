@@ -166,9 +166,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     'as' => 'user.profile'
   ]);
 
+  Route::get('user/delete/{id}', [
+    'uses' => 'App\Http\Controllers\UsersController@destroy',
+    'as' => 'user.delete'
+  ]);
+
   Route::post('/user/profile/update', [
     'uses' => 'App\Http\Controllers\ProfilesController@update',
     'as' => 'user.profile.update'
+  ]);
+
+  Route::get('/settings', [
+    'uses' => 'App\Http\Controllers\SettingsController@index',
+    'as' => 'settings'
+  ]);
+
+  Route::post('/settings/update', [
+    'uses' => 'App\Http\Controllers\SettingsController@update',
+    'as' => 'settings.update'
   ]);
 
 });
