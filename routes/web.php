@@ -17,9 +17,10 @@ Route::get('/test', function() {
   return App\Models\User::find(1)->profile;
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [
+'uses' => 'App\Http\Controllers\FrontEndController@index',
+'as' => 'index'
+]);
 
 Auth::routes();
 
