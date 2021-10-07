@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 
 class FrontEndController extends Controller
 {
@@ -20,5 +21,28 @@ class FrontEndController extends Controller
                   ->with('wordpress', Category::find(4))
                   ->with('Laravel', Category::find(5))
                   ->with('settings', Setting::first());
+    }
+
+    public function singlePost($slug)
+    {
+      $post = Post::where('slug', $slug)->first();
+      $next_id = Post::where('id', '>', $post->id)->min('id');
+      $prev_id = Post::where('id', '<', $post->id)->max('id');
+      return view('single')->with('post', $post)
+                           ->with('title', $post->title)
+                           ->with('settings', Setting::first())
+                           ->with('categories', Category::take(5)->get())
+                           ->with('next', Post::find($next_id))
+                           ->with('prev', Post::find($prev_id))
+                           ->with('tags', Tag::all());
+    }
+
+    public function category($id)
+    {
+      $category = Category::find($id);
+      return view('category')->with('category', $category)
+                             ->with('title', $category->name)
+                             ->with('settings', Setting::first())
+                             ->with('categories', Category::take(5)->get());
     }
 }

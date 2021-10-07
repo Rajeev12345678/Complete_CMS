@@ -22,6 +22,16 @@ Route::get('/', [
 'as' => 'index'
 ]);
 
+Route::get('/post/{slug}', [
+  'uses' => 'App\Http\Controllers\FrontEndController@singlePost',
+  'as' => 'post.single'
+]);
+
+Route::get('/category/{id}', [
+  'uses' => 'App\Http\Controllers\FrontEndController@category',
+  'as' => 'category.single'
+]);
+
 Auth::routes();
 
 
