@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/subscribe', function() {
+  $email = request('email');
+  Newsletter::subscribe($email);
+  // session::flash('subscribed', 'Successfully subscribed');
+  return redirect()->back();
+});
 
 Route::get('/test', function() {
   return App\Models\User::find(1)->profile;
@@ -56,7 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
   ]);
 
 
-  Route::get('/home', [
+  Route::get('/dashboard', [
     'uses' => 'App\Http\Controllers\HomeController@index',
     'as' => 'home'
   ]);
